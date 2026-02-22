@@ -38,8 +38,10 @@ RENTAPP to kompleksowe rozwiązanie dla firm zajmujących się wynajmem sprzętu
 6. **FAQ** – zarządzanie pytaniami i odpowiedziami z sortowaniem
 7. **Strona usług** – edytor CMS do treści strony usługowej
 8. **Ustawienia** – dane firmy, kontakt, WhatsApp, SEO
-9. **WYSIWYG Editor** – Quill (opisy, FAQ, portfolio, kategorie, strona usług)
-10. **Email autoresponder** – automatyczne potwierdzenie zapytania dla klienta
+9. **Administratorzy** – zarządzanie kontami administratorów (CRUD, zmiana haseł)
+10. **Mój profil** – edycja własnych danych i zmiana hasła
+11. **WYSIWYG Editor** – Quill (opisy, FAQ, portfolio, kategorie, strona usług)
+12. **Email autoresponder** – automatyczne potwierdzenie zapytania dla klienta
 
 ### 🔔 System Powiadomień Email
 
@@ -154,6 +156,25 @@ location ~ \.php$ {
 
 ⚠️ **UWAGA:** Zmień hasło natychmiast po pierwszym logowaniu!
 
+### 👥 Zarządzanie Administratorami
+
+**Zmiana własnego hasła:**
+1. Kliknij na swoje imię w prawym górnym rogu
+2. Wybierz **"Mój profil"** (`/admin/profile`)
+3. Wpisz obecne hasło, nowe hasło i potwierdź
+4. Zapisz zmiany
+
+**Dodawanie nowych administratorów:**
+1. Menu boczne → **"Administratorzy"** (`/admin/users`)
+2. Kliknij **"Dodaj administratora"**
+3. Wypełnij formularz (imię, email, hasło min. 8 znaków)
+4. Nowy admin może się zalogować natychmiast
+
+**Zabezpieczenia:**
+- Nie możesz usunąć swojego własnego konta
+- Nie możesz usunąć ostatniego administratora
+- Zmiana hasła wymaga podania obecnego hasła (w profilu)
+
 ---
 
 ## 📂 Struktura Projektu
@@ -163,6 +184,16 @@ RENTAPP/
 ├── app/
 │   ├── Http/Controllers/
 │   │   ├── Admin/          # Kontrolery panelu admin
+│   │   │   ├── DashboardController.php
+│   │   │   ├── EquipmentController.php
+│   │   │   ├── CategoryController.php
+│   │   │   ├── InquiryController.php
+│   │   │   ├── FaqController.php
+│   │   │   ├── PortfolioController.php
+│   │   │   ├── ServicePageController.php
+│   │   │   ├── SettingController.php
+│   │   │   ├── UserController.php       # Zarządzanie administratorami
+│   │   │   └── ProfileController.php    # Profil użytkownika
 │   │   ├── CategoryController.php
 │   │   ├── ContactController.php
 │   │   ├── EquipmentController.php
@@ -187,12 +218,20 @@ RENTAPP/
 ├── resources/
 │   ├── views/
 │   │   ├── admin/         # Widoki panelu admin (AdminLTE)
-│   │   ├── categories/    # Katalog kategorii
+│   │   │   ├── users/     # Zarządzanie administratorami
+│   │   │   ├── profile/   # Profil użytkownika
+│   │   │   ├── equipment/
+│   │   │   ├── categories/
+│   │   │   ├── inquiries/
+│   │   │   ├── faqs/
+│   │   │   ├── portfolio/
+│   │   │   └── ...
+│   │   ├── categories/    # Katalog kategorii (public)
 │   │   ├── emails/        # Szablony email
-│   │   ├── equipment/     # Szczegóły sprzętu
-│   │   ├── faqs/          # FAQ
+│   │   ├── equipment/     # Szczegóły sprzętu (public)
+│   │   ├── faqs/          # FAQ (public)
 │   │   ├── layouts/       # Layout publiczny i admin
-│   │   ├── portfolio/     # Realizacje
+│   │   ├── portfolio/     # Realizacje (public)
 │   │   └── home.blade.php
 │   └── css/               # Style publiczne
 ├── public/

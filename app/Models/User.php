@@ -45,4 +45,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get the profile URL for AdminLTE user menu
+     */
+    public function adminlte_profile_url(): string
+    {
+        return route('admin.profile.edit');
+    }
 }

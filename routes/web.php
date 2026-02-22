@@ -81,4 +81,12 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
         ->except(['show']);
     Route::delete('portfolio/{portfolio}/media/{media}', [\App\Http\Controllers\Admin\PortfolioController::class, 'deleteMedia'])
         ->name('portfolio.media.delete');
+
+    // User management
+    Route::resource('users', \App\Http\Controllers\Admin\UserController::class)
+        ->except(['show']);
+
+    // Profile
+    Route::get('profile', [\App\Http\Controllers\Admin\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('profile', [\App\Http\Controllers\Admin\ProfileController::class, 'update'])->name('profile.update');
 });

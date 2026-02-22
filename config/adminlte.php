@@ -138,7 +138,7 @@ return [
     'usermenu_header_class' => 'bg-primary',
     'usermenu_image' => false,
     'usermenu_desc' => false,
-    'usermenu_profile_url' => false,
+    'usermenu_profile_url' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -348,6 +348,11 @@ return [
             'text' => 'Ustawienia',
             'url' => 'admin/settings',
             'icon' => 'fas fa-fw fa-cog',
+        ],
+        [
+            'text' => 'Administratorzy',
+            'url' => 'admin/users',
+            'icon' => 'fas fa-fw fa-users-cog',
         ],
         [
             'text' => 'Strona publiczna',
