@@ -3,7 +3,10 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\EquipmentController;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
@@ -16,10 +19,20 @@ Route::prefix('kategorie')->name('categories.')->group(function () {
 
 Route::get('/sprzet/{equipment:slug}', [EquipmentController::class, 'show'])->name('equipment.show');
 
+Route::get('/uslugi', [ServiceController::class, 'index'])->name('services.index');
+Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
+Route::get('/realizacje', [PortfolioController::class, 'index'])->name('portfolio.index');
+Route::get('/realizacje/{portfolio}', [PortfolioController::class, 'show'])->name('portfolio.show');
+
 Route::prefix('kontakt')->name('contact.')->group(function () {
     Route::get('/', [ContactController::class, 'index'])->name('index');
-    Route::post('/', [ContactController::class, 'store'])->name('store');
+    Route::post('/', [ContactController::class, 'store'])
+        ->middleware('throttle:3,60')
+        ->name('store');
 });
+
+// AJAX search endpoint
+Route::get('/api/search', [EquipmentController::class, 'search'])->name('api.search');
 
 // Auth routes
 Route::get('/admin/login', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'create'])
@@ -57,4 +70,15 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
     Route::get('settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
     Route::put('settings', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
+
+    Route::get('service-page', [\App\Http\Controllers\Admin\ServicePageController::class, 'index'])->name('service-page.index');
+    Route::put('service-page', [\App\Http\Controllers\Admin\ServicePageController::class, 'update'])->name('service-page.update');
+
+    Route::resource('faqs', \App\Http\Controllers\Admin\FaqController::class)
+        ->except(['show']);
+
+    Route::resource('portfolio', \App\Http\Controllers\Admin\PortfolioController::class)
+        ->except(['show']);
+    Route::delete('portfolio/{portfolio}/media/{media}', [\App\Http\Controllers\Admin\PortfolioController::class, 'deleteMedia'])
+        ->name('portfolio.media.delete');
 });

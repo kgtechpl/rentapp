@@ -21,6 +21,46 @@
     <div class="container">
         <h1 class="fw-bold mb-4">Sprzęt do wynajęcia</h1>
 
+        <!-- Live Search -->
+        <div class="mb-4" x-data="searchWidget()">
+            <div class="position-relative">
+                <input type="text"
+                       class="form-control form-control-lg"
+                       placeholder="Szukaj sprzętu..."
+                       x-model="query"
+                       @input.debounce.300ms="search()">
+                <i class="fas fa-search position-absolute top-50 end-0 translate-middle-y me-3 text-muted"></i>
+            </div>
+
+            <!-- Search Results -->
+            <div x-show="results.length > 0" class="card mt-2 shadow-sm" style="display: none;">
+                <div class="list-group list-group-flush">
+                    <template x-for="item in results" :key="item.id">
+                        <a :href="item.url" class="list-group-item list-group-item-action">
+                            <div class="d-flex align-items-center">
+                                <img :src="item.image || '/placeholder.png'"
+                                     class="me-3 rounded"
+                                     style="width:60px;height:45px;object-fit:cover;"
+                                     :alt="item.name"
+                                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'60\' height=\'45\'%3E%3Crect width=\'60\' height=\'45\' fill=\'%23e9ecef\'/%3E%3C/svg%3E'">
+                                <div class="flex-grow-1">
+                                    <div class="fw-bold" x-text="item.name"></div>
+                                    <small class="text-muted">
+                                        <span x-text="item.category"></span>
+                                        <span x-show="item.brand"> • <span x-text="item.brand"></span></span>
+                                    </small>
+                                </div>
+                                <div class="text-end">
+                                    <div class="fw-bold text-primary" x-text="item.price"></div>
+                                    <small class="badge bg-secondary" x-text="item.status"></small>
+                                </div>
+                            </div>
+                        </a>
+                    </template>
+                </div>
+            </div>
+        </div>
+
         @if($categories->isEmpty())
             <div class="alert alert-info">Brak kategorii. Sprawdź wkrótce!</div>
         @else
@@ -45,7 +85,7 @@
                                 {{ $cat->name }}
                             </h5>
                             @if($cat->description)
-                            <p class="card-text text-muted small">{{ Str::limit($cat->description, 100) }}</p>
+                            <p class="card-text text-muted small">{{ Str::limit(strip_tags($cat->description), 100) }}</p>
                             @endif
                             <span class="badge bg-primary">{{ $cat->active_equipment_count }} pozycji</span>
                         </div>
@@ -58,3 +98,31 @@
     </div>
 </section>
 @endsection
+
+@push('scripts')
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script>
+    function searchWidget() {
+        return {
+            query: '',
+            results: [],
+            search() {
+                if (this.query.length < 2) {
+                    this.results = [];
+                    return;
+                }
+
+                fetch('/api/search?q=' + encodeURIComponent(this.query))
+                    .then(response => response.json())
+                    .then(data => {
+                        this.results = data;
+                    })
+                    .catch(error => {
+                        console.error('Search error:', error);
+                        this.results = [];
+                    });
+            }
+        };
+    }
+</script>
+@endpush

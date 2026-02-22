@@ -94,9 +94,32 @@
 </section>
 @endif
 
+<!-- Services Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h2 class="fw-bold mb-3">
+                    <i class="fas fa-wrench text-primary me-2"></i>Oferujemy również usługi
+                </h2>
+                <p class="lead">
+                    Nie chcesz wynajmować sprzętu? Możemy wykonać pracę za Ciebie!
+                    Profesjonalnie, szybko i sprawnie.
+                </p>
+                <a href="{{ route('services.index') }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-arrow-right me-2"></i>Sprawdź nasze usługi
+                </a>
+            </div>
+            <div class="col-md-6 text-center">
+                <i class="fas fa-hard-hat fa-10x text-muted opacity-25"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Contact CTA -->
 @if(!empty($settings['contact_intro']))
-<section class="py-5 bg-light">
+<section class="py-5">
     <div class="container text-center">
         <h3 class="mb-3">{{ $settings['contact_intro'] }}</h3>
         <a href="{{ route('contact.index') }}" class="btn btn-primary btn-lg">

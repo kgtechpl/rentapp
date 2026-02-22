@@ -322,6 +322,21 @@ return [
             'url' => 'admin/equipment',
             'icon' => 'fas fa-fw fa-tools',
         ],
+        [
+            'text' => 'Strona usług',
+            'url' => 'admin/service-page',
+            'icon' => 'fas fa-fw fa-wrench',
+        ],
+        [
+            'text' => 'Realizacje',
+            'url' => 'admin/portfolio',
+            'icon' => 'fas fa-fw fa-images',
+        ],
+        [
+            'text' => 'FAQ',
+            'url' => 'admin/faqs',
+            'icon' => 'fas fa-fw fa-question-circle',
+        ],
         ['header' => 'KONTAKT'],
         [
             'text' => 'Zapytania',

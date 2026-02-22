@@ -19,7 +19,8 @@
 
 <div class="mb-3">
     <label class="form-label fw-bold">Opis</label>
-    <textarea name="description" rows="3" class="form-control">{{ old('description', $cat?->description ?? '') }}</textarea>
+    <textarea name="description" style="display:none;">{{ old('description', $cat?->description ?? '') }}</textarea>
+    <div class="wysiwyg-editor" style="height: 150px;">{!! old('description', $cat?->description ?? '') !!}</div>
 </div>
 
 <div class="row g-3 mb-3">

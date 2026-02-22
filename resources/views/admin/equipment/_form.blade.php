@@ -33,7 +33,8 @@
 
 <div class="mb-3">
     <label class="form-label fw-bold">Opis</label>
-    <textarea name="description" rows="4" class="form-control">{{ old('description', $eq?->description ?? '') }}</textarea>
+    <textarea name="description" style="display:none;">{{ old('description', $eq?->description ?? '') }}</textarea>
+    <div class="wysiwyg-editor" style="height: 200px;">{!! old('description', $eq?->description ?? '') !!}</div>
 </div>
 
 <div class="mb-3">
@@ -60,6 +61,17 @@
                    {{ old('is_featured', $eq?->is_featured ?? false) ? 'checked' : '' }}>
             <label class="form-check-label">Polecany (strona główna)</label>
         </div>
+    </div>
+</div>
+
+<div class="mb-3">
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="service_available" value="1"
+               {{ old('service_available', $eq?->service_available ?? false) ? 'checked' : '' }}>
+        <label class="form-check-label fw-bold">
+            <i class="fas fa-wrench text-primary"></i> Możliwa usługa tym narzędziem
+            <small class="text-muted d-block">Zaznacz, jeśli oferujesz usługi z wykorzystaniem tego sprzętu</small>
+        </label>
     </div>
 </div>
 

@@ -36,3 +36,47 @@
     </div>
 </div>
 @stop
+
+@section('css')
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+@stop
+
+@section('js')
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var editors = [];
+
+            document.querySelectorAll('.wysiwyg-editor').forEach(function(element) {
+                var editor = new Quill(element, {
+                    theme: 'snow',
+                    modules: {
+                        toolbar: [
+                            [{ 'header': [1, 2, 3, false] }],
+                            ['bold', 'italic', 'underline'],
+                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                            ['link', 'image'],
+                            ['clean']
+                        ]
+                    }
+                });
+
+                var textarea = element.previousElementSibling;
+                editor.on('text-change', function() {
+                    textarea.value = editor.root.innerHTML;
+                });
+
+                editors.push({ editor: editor, textarea: textarea });
+            });
+
+            // Sync before submit
+            document.querySelectorAll('form').forEach(function(form) {
+                form.addEventListener('submit', function() {
+                    editors.forEach(function(item) {
+                        item.textarea.value = item.editor.root.innerHTML;
+                    });
+                });
+            });
+        });
+    </script>
+@stop

@@ -127,4 +127,69 @@
         </div>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-chart-line mr-2"></i>Zapytania (ostatnie 7 dni)</h3>
+            </div>
+            <div class="card-body">
+                <canvas id="inquiriesChart" style="height: 200px;"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-fire mr-2"></i>Najpopularniejszy sprzęt</h3>
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-sm mb-0">
+                    <tbody>
+                    @forelse($popularEquipment as $item)
+                        <tr>
+                            <td><a href="{{ route('admin.equipment.edit', $item) }}">{{ $item->name }}</a></td>
+                            <td class="text-right"><span class="badge badge-info">{{ $item->inquiries_count }} zapytań</span></td>
+                        </tr>
+                    @empty
+                        <tr><td class="text-center text-muted p-3">Brak danych</td></tr>
+                    @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@stop
+
+@section('js')
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+    const ctx = document.getElementById('inquiriesChart');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {!! json_encode(array_column($inquiriesChart, 'date')) !!},
+            datasets: [{
+                label: 'Liczba zapytań',
+                data: {!! json_encode(array_column($inquiriesChart, 'count')) !!},
+                borderColor: 'rgb(75, 192, 192)',
+                backgroundColor: 'rgba(75, 192, 192, 0.1)',
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: { beginAtZero: true, ticks: { stepSize: 1 } }
+            }
+        }
+    });
+</script>
 @stop

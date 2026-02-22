@@ -3,10 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="@yield('meta_description', $settings['hero_subtitle'] ?? '')">
+    <meta name="description" content="@yield('meta_description', $settings['hero_subtitle'] ?? 'Profesjonalny wynajem sprzętu')">
+    <meta name="keywords" content="@yield('meta_keywords', 'wynajem sprzętu, wypożyczalnia, narzędzia, sprzęt budowlany')">
+    <meta name="author" content="{{ $settings['company_name'] ?? 'Wynajem Sprzętu' }}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="@yield('og_type', 'website')">
+    <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="@yield('title', $settings['company_name'] ?? 'Wynajem sprzętu')">
-    <meta property="og:description" content="@yield('meta_description', $settings['hero_subtitle'] ?? '')">
-    <meta property="og:type" content="website">
+    <meta property="og:description" content="@yield('meta_description', $settings['hero_subtitle'] ?? 'Profesjonalny wynajem sprzętu')">
+    <meta property="og:image" content="@yield('og_image', asset('images/logo.png'))">
+    <meta property="og:site_name" content="{{ $settings['company_name'] ?? 'Wynajem Sprzętu' }}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url()->current() }}">
+    <meta property="twitter:title" content="@yield('title', $settings['company_name'] ?? 'Wynajem sprzętu')">
+    <meta property="twitter:description" content="@yield('meta_description', $settings['hero_subtitle'] ?? 'Profesjonalny wynajem sprzętu')">
+    <meta property="twitter:image" content="@yield('og_image', asset('images/logo.png'))">
+
     <title>@yield('title', $settings['company_name'] ?? 'Wynajem sprzętu')</title>
 
     <!-- Bootstrap 5 -->
@@ -63,7 +78,16 @@
                     <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Strona główna</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('categories.*') ? 'active' : '' }}" href="{{ route('categories.index') }}">Sprzęt</a>
+                    <a class="nav-link {{ request()->routeIs('categories.*') ? 'active' : '' }}" href="{{ route('categories.index') }}">Wynajem</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('services.*') ? 'active' : '' }}" href="{{ route('services.index') }}">Usługi</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('portfolio.*') ? 'active' : '' }}" href="{{ route('portfolio.index') }}">Realizacje</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('faq.*') ? 'active' : '' }}" href="{{ route('faq.index') }}">FAQ</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('contact.*') ? 'active' : '' }}" href="{{ route('contact.index') }}">Kontakt</a>
@@ -128,7 +152,10 @@
                 <h5 class="text-white mb-3">Nawigacja</h5>
                 <ul class="list-unstyled">
                     <li><a href="{{ route('home') }}">Strona główna</a></li>
-                    <li><a href="{{ route('categories.index') }}">Sprzęt do wynajęcia</a></li>
+                    <li><a href="{{ route('categories.index') }}">Wynajem sprzętu</a></li>
+                    <li><a href="{{ route('services.index') }}">Usługi</a></li>
+                    <li><a href="{{ route('portfolio.index') }}">Realizacje</a></li>
+                    <li><a href="{{ route('faq.index') }}">FAQ</a></li>
                     <li><a href="{{ route('contact.index') }}">Kontakt</a></li>
                 </ul>
             </div>

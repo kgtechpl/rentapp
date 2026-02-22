@@ -42,6 +42,7 @@ class EquipmentController extends Controller
         $data = $this->validateEquipment($request);
         $data['is_price_negotiable'] = $request->boolean('is_price_negotiable');
         $data['is_featured'] = $request->boolean('is_featured');
+        $data['service_available'] = $request->boolean('service_available');
 
         $equipment = Equipment::create($data);
 
@@ -68,6 +69,7 @@ class EquipmentController extends Controller
         $data = $this->validateEquipment($request, $equipment->id);
         $data['is_price_negotiable'] = $request->boolean('is_price_negotiable');
         $data['is_featured'] = $request->boolean('is_featured');
+        $data['service_available'] = $request->boolean('service_available');
 
         if ($data['status'] !== 'rented') {
             $data['rented_until'] = null;
@@ -159,6 +161,7 @@ class EquipmentController extends Controller
             'status' => 'required|in:available,rented,hidden',
             'rented_until' => 'nullable|date|required_if:status,rented',
             'is_featured' => 'boolean',
+            'service_available' => 'boolean',
             'brand' => 'nullable|string|max:100',
             'condition_notes' => 'nullable|string',
             'sort_order' => 'integer|min:0',

@@ -24,6 +24,7 @@ class Equipment extends Model implements HasMedia
         'status',
         'rented_until',
         'is_featured',
+        'service_available',
         'brand',
         'condition_notes',
         'sort_order',
@@ -32,6 +33,7 @@ class Equipment extends Model implements HasMedia
     protected $casts = [
         'is_price_negotiable' => 'boolean',
         'is_featured' => 'boolean',
+        'service_available' => 'boolean',
         'rented_until' => 'date',
         'price_per_day' => 'decimal:2',
     ];
@@ -51,6 +53,11 @@ class Equipment extends Model implements HasMedia
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function inquiries()
+    {
+        return $this->hasMany(ContactInquiry::class, 'equipment_id');
     }
 
     public function registerMediaCollections(): void

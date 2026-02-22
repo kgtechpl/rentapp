@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactRequest;
 use App\Mail\NewInquiryMail;
+use App\Mail\CustomerConfirmationMail;
 use App\Models\ContactInquiry;
 use App\Models\Equipment;
 use App\Models\Setting;
@@ -40,6 +41,10 @@ class ContactController extends Controller
             'created_at' => now(),
         ]);
 
+        // Load equipment relation for emails
+        $inquiry->load('equipment');
+
+        // Email to admin
         $adminEmail = Setting::get('email');
         if ($adminEmail) {
             try {
@@ -49,7 +54,16 @@ class ContactController extends Controller
             }
         }
 
+        // Autoresponder email to customer
+        if ($inquiry->email) {
+            try {
+                Mail::to($inquiry->email)->send(new CustomerConfirmationMail($inquiry));
+            } catch (\Exception $e) {
+                // Mail failed silently
+            }
+        }
+
         return redirect()->route('contact.index')
-            ->with('success', 'Dziękujemy za wiadomość! Odpiszemy jak najszybciej.');
+            ->with('success', 'Dziękujemy za wiadomość! Otrzymasz potwierdzenie na email.');
     }
 }

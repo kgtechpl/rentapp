@@ -2,6 +2,9 @@
 
 @section('title', $equipment->name . ' – ' . ($settings['company_name'] ?? ''))
 @section('meta_description', Str::limit(strip_tags($equipment->description ?? $equipment->name), 160))
+@section('og_type', 'product')
+@section('og_image', $equipment->getFirstMediaUrl('images') ?: asset('images/logo.png'))
+@section('meta_keywords', $equipment->category->name . ', ' . ($equipment->brand ?? 'wynajem') . ', wynajem sprzętu, ' . $equipment->name)
 
 @section('content')
 
@@ -78,6 +81,30 @@
                     </span>
                 </div>
 
+                <!-- Availability Calendar -->
+                @if($equipment->status === 'rented' && $equipment->rented_until)
+                <div class="alert alert-info mb-4">
+                    <h6 class="fw-bold"><i class="fas fa-calendar-alt me-2"></i>Dostępność</h6>
+                    <p class="mb-0">Ten sprzęt jest aktualnie wynajęty do <strong>{{ $equipment->rented_until->format('d.m.Y') }}</strong></p>
+                    <p class="mb-0 small text-muted">Będzie dostępny ponownie: {{ $equipment->rented_until->addDay()->format('d.m.Y') }}</p>
+                    @php
+                        $daysUntilAvailable = now()->diffInDays($equipment->rented_until, false);
+                    @endphp
+                    @if($daysUntilAvailable > 0)
+                        <div class="progress mt-2" style="height: 20px;">
+                            <div class="progress-bar bg-warning" style="width: {{ min(100, ($daysUntilAvailable / 30) * 100) }}%">
+                                Jeszcze {{ $daysUntilAvailable }} dni
+                            </div>
+                        </div>
+                    @endif
+                </div>
+                @else
+                <div class="alert alert-success mb-4">
+                    <h6 class="fw-bold"><i class="fas fa-check-circle me-2"></i>Dostępność</h6>
+                    <p class="mb-0">Ten sprzęt jest <strong>dostępny od zaraz</strong>! Skontaktuj się z nami aby zarezerwować termin.</p>
+                </div>
+                @endif
+
                 <!-- Price -->
                 <div class="bg-primary bg-opacity-10 rounded p-3 mb-4">
                     <h4 class="text-primary fw-bold mb-0">{{ $equipment->price_display }}</h4>
@@ -87,7 +114,7 @@
                 @if($equipment->description)
                 <div class="mb-4">
                     <h5 class="fw-bold">Opis</h5>
-                    <p class="text-muted">{{ $equipment->description }}</p>
+                    <div class="text-muted">{!! $equipment->description !!}</div>
                 </div>
                 @endif
 

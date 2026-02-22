@@ -1,7 +1,9 @@
 @extends('layouts.public')
 
 @section('title', $category->name . ' – ' . ($settings['company_name'] ?? ''))
-@section('meta_description', $category->description ?? 'Przeglądaj sprzęt w kategorii ' . $category->name)
+@section('meta_description', Str::limit(strip_tags($category->description ?? 'Przeglądaj sprzęt w kategorii ' . $category->name), 160))
+@section('og_image', $category->getFirstMediaUrl('image') ?: asset('images/logo.png'))
+@section('meta_keywords', $category->name . ', wynajem sprzętu, wypożyczalnia, ' . strtolower($category->name))
 
 @section('content')
 
@@ -25,7 +27,7 @@
             <h1 class="fw-bold mb-0">{{ $category->name }}</h1>
         </div>
         @if($category->description)
-            <p class="text-muted mb-4">{{ $category->description }}</p>
+            <div class="text-muted mb-4">{!! $category->description !!}</div>
         @endif
 
         <!-- Filter bar -->
