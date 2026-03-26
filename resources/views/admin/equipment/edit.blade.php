@@ -1,6 +1,10 @@
 @extends('adminlte::page')
 
 @section('title', 'Edytuj: ' . $equipment->name)
+
+{{-- Enable Select2 plugin --}}
+@section('plugins.Select2', true)
+
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
         <h1><i class="fas fa-edit mr-2"></i>Edytuj: {{ $equipment->name }}</h1>

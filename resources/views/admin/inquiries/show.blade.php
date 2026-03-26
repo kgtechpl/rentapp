@@ -51,7 +51,7 @@
                         <a href="{{ route('admin.equipment.edit', $inquiry->equipment) }}">
                             {{ $inquiry->equipment->name }}
                         </a>
-                        ({{ $inquiry->equipment->category->name }})
+                        ({{ $inquiry->equipment->categories->first()?->name ?? 'Bez kategorii' }})
                     </dd>
                     @endif
 

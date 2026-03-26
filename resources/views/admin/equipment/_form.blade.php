@@ -5,17 +5,16 @@
 
 <div class="row g-3 mb-3">
     <div class="col-md-6">
-        <label class="form-label fw-bold">Kategoria *</label>
-        <select name="category_id" class="form-select @error('category_id') is-invalid @enderror" required>
-            <option value="">Wybierz kategorię</option>
+        <label class="form-label fw-bold">Kategorie *</label>
+        <select name="categories[]" id="categories-select" class="form-control select2 @error('categories') is-invalid @enderror" multiple required data-placeholder="Wybierz kategorie...">
             @foreach($categories as $cat)
                 <option value="{{ $cat->id }}"
-                    {{ old('category_id', $eq?->category_id ?? '') == $cat->id ? 'selected' : '' }}>
+                    {{ in_array($cat->id, old('categories', $eq?->categories->pluck('id')->toArray() ?? [])) ? 'selected' : '' }}>
                     {{ $cat->name }}
                 </option>
             @endforeach
         </select>
-        @error('category_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+        @error('categories')<div class="invalid-feedback">{{ $message }}</div>@enderror
     </div>
     <div class="col-md-6">
         <label class="form-label fw-bold">Marka</label>
@@ -42,11 +41,44 @@
     <textarea name="condition_notes" rows="2" class="form-control">{{ old('condition_notes', $eq?->condition_notes ?? '') }}</textarea>
 </div>
 
+<div class="card mb-3">
+    <div class="card-header bg-primary text-white">
+        <h6 class="mb-0"><i class="fas fa-tags me-2"></i>Cennik (zł/dzień)</h6>
+    </div>
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <label class="form-label fw-bold">1 dzień</label>
+                <input type="number" name="price_per_day" class="form-control" step="0.01" min="0"
+                       value="{{ old('price_per_day', $eq?->price_per_day ?? '') }}" placeholder="np. 100">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">3-6 dni</label>
+                <input type="number" name="price_3_days" class="form-control" step="0.01" min="0"
+                       value="{{ old('price_3_days', $eq?->price_3_days ?? '') }}" placeholder="np. 90">
+                <small class="text-muted">Opcjonalne</small>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">7-13 dni</label>
+                <input type="number" name="price_7_days" class="form-control" step="0.01" min="0"
+                       value="{{ old('price_7_days', $eq?->price_7_days ?? '') }}" placeholder="np. 80">
+                <small class="text-muted">Opcjonalne</small>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">14+ dni</label>
+                <input type="number" name="price_14_days" class="form-control" step="0.01" min="0"
+                       value="{{ old('price_14_days', $eq?->price_14_days ?? '') }}" placeholder="np. 70">
+                <small class="text-muted">Opcjonalne</small>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row g-3 mb-3">
     <div class="col-md-4">
-        <label class="form-label fw-bold">Cena za dzień (zł)</label>
-        <input type="number" name="price_per_day" class="form-control" step="0.01" min="0"
-               value="{{ old('price_per_day', $eq?->price_per_day ?? '') }}" placeholder="Zostaw puste">
+        <label class="form-label fw-bold">Kaucja (zł)</label>
+        <input type="number" name="deposit" class="form-control" step="0.01" min="0"
+               value="{{ old('deposit', $eq?->deposit ?? '') }}" placeholder="Zostaw puste">
     </div>
     <div class="col-md-4 d-flex align-items-end pb-2">
         <div class="form-check">
@@ -99,10 +131,21 @@
     </div>
 </div>
 
-@push('scripts')
+@push('js')
 <script>
-document.getElementById('status-select')?.addEventListener('change', function() {
-    document.getElementById('rented-until-field').style.display = this.value === 'rented' ? '' : 'none';
+$(document).ready(function() {
+    // Initialize Select2 for categories
+    $('#categories-select').select2({
+        theme: 'bootstrap4',
+        width: '100%',
+        placeholder: 'Wybierz kategorie...',
+        allowClear: false
+    });
+
+    // Status field toggle
+    document.getElementById('status-select')?.addEventListener('change', function() {
+        document.getElementById('rented-until-field').style.display = this.value === 'rented' ? '' : 'none';
+    });
 });
 </script>
 @endpush

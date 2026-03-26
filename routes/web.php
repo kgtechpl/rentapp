@@ -35,11 +35,7 @@ Route::prefix('kontakt')->name('contact.')->group(function () {
 Route::get('/api/search', [EquipmentController::class, 'search'])->name('api.search');
 
 // Auth routes
-Route::get('/admin/login', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'create'])
-    ->name('login');
-Route::post('/admin/login', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'store']);
-Route::post('/admin/logout', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroy'])
-    ->name('logout');
+require __DIR__.'/auth.php';
 
 // Admin routes
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {

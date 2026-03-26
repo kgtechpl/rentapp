@@ -11,7 +11,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('/favicon/apple-touch-icon.png') }}" />
     <link rel="manifest" href="{{ asset('/favicon/site.webmanifest') }}" />
 
-    <title>@yield('title', 'FakturaAlert') — {{ config('app.name') }}</title>
+    <title>@yield('title', 'RENTAPP') — {{ config('app.name') }}</title>
 
     <!-- AdminLTE CSS -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -56,25 +56,11 @@
         </ul>
         <ul class="navbar-nav ml-auto">
             @auth
-                @if(auth()->user()->invoices_new_count ?? \App\Models\Invoice::whereIn('company_id', auth()->user()->companies()->pluck('id'))->where('status','new')->count() > 0)
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('invoices.index', ['status' => 'new']) }}">
-                            <i class="far fa-bell"></i>
-                            <span class="badge badge-warning navbar-badge">
-                                {{ \App\Models\Invoice::whereIn('company_id', auth()->user()->companies()->pluck('id'))->where('status','new')->count() }}
-                            </span>
-                        </a>
-                    </li>
-                @endif
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         <i class="far fa-user"></i> {{ auth()->user()->name }}
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a href="{{ route('two-factor.show') }}" class="dropdown-item">
-                            <i class="fas fa-shield-alt mr-2"></i> Weryfikacja 2FA
-                        </a>
-                        <div class="dropdown-divider"></div>
                         <form action="{{ route('logout') }}" method="POST">
                             @csrf
                             <button type="submit" class="dropdown-item">
@@ -90,8 +76,8 @@
     <!-- Sidebar -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <a href="{{ route('dashboard') }}" class="brand-link">
-            <i class="fas fa-file-invoice-dollar brand-image ml-3"></i>
-            <span class="brand-text font-weight-light">FakturaAlert</span>
+            <i class="fas fa-tools brand-image ml-3"></i>
+            <span class="brand-text font-weight-light">RENTAPP</span>
         </a>
 
         <div class="sidebar">
@@ -101,24 +87,6 @@
                         <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>Dashboard</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('invoices.index') }}" class="nav-link {{ request()->routeIs('invoices.*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-file-invoice"></i>
-                            <p>Faktury kosztowe</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('companies.index') }}" class="nav-link {{ request()->routeIs('companies.*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-building"></i>
-                            <p>Firmy</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('categories.index') }}" class="nav-link {{ request()->routeIs('categories.*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-tags"></i>
-                            <p>Kategorie</p>
                         </a>
                     </li>
                     <li class="nav-header">USTAWIENIA</li>

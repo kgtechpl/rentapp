@@ -88,7 +88,11 @@
                         @if($item->brand)<small class="d-block text-muted">{{ $item->brand }}</small>@endif
                         @if($item->is_featured)<span class="badge badge-warning">Polecany</span>@endif
                     </td>
-                    <td>{{ $item->category->name }}</td>
+                    <td>
+                        @foreach($item->categories as $cat)
+                            <span class="badge badge-primary">{{ $cat->name }}</span>
+                        @endforeach
+                    </td>
                     <td>{{ $item->price_display }}</td>
                     <td>
                         <span class="badge badge-{{ $item->status_badge_class }}">{{ $item->status_label }}</span>

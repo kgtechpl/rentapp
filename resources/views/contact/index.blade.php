@@ -134,7 +134,7 @@
                             <option value="">-- Wybierz sprzęt --</option>
                             @foreach($equipment as $item)
                                 <option value="{{ $item->id }}" {{ old('equipment_id', request('equipment_id')) == $item->id ? 'selected' : '' }}>
-                                    {{ $item->name }} ({{ $item->category->name }})
+                                    {{ $item->name }} ({{ $item->categories->first()?->name ?? 'Bez kategorii' }})
                                 </option>
                             @endforeach
                         </select>

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -40,16 +39,17 @@ class Category extends Model implements HasMedia
         return 'slug';
     }
 
-    public function equipment(): HasMany
+    public function equipment()
     {
-        return $this->hasMany(Equipment::class)->orderBy('sort_order');
+        return $this->belongsToMany(Equipment::class)->withTimestamps()->orderBy('equipment.sort_order');
     }
 
-    public function activeEquipment(): HasMany
+    public function activeEquipment()
     {
-        return $this->hasMany(Equipment::class)
-            ->whereIn('status', ['available', 'rented'])
-            ->orderBy('sort_order');
+        return $this->belongsToMany(Equipment::class)
+            ->withTimestamps()
+            ->whereIn('equipment.status', ['available', 'rented'])
+            ->orderBy('equipment.sort_order');
     }
 
     public function registerMediaCollections(): void

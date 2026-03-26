@@ -40,7 +40,7 @@
                             </div>
                         @endif
                         <h6 class="fw-bold text-dark">{{ $cat->name }}</h6>
-                        <small class="text-muted">{{ $cat->active_equipment_count }} pozycji</small>
+                        <small class="text-primary fw-bold">{{ $cat->active_equipment_count }} pozycji</small>
                     </div>
                 </a>
             </div>
@@ -68,9 +68,17 @@
                         </div>
                     @endif
                     <div class="card-body d-flex flex-column">
-                        <h6 class="card-title fw-bold">{{ $item->name }}</h6>
-                        <small class="text-muted mb-2">{{ $item->category->name }}</small>
-                        <p class="text-primary fw-bold mt-auto mb-2">{{ $item->price_display }}</p>
+                        <h6 class="card-title fw-bold">
+                            {{ $item->name }}
+                            @if($item->service_available)
+                            <i class="fas fa-wrench text-warning ms-1" title="Dostępna usługa tym sprzętem"></i>
+                            @endif
+                        </h6>
+                        <small class="text-muted mb-2">{{ $item->categories->first()?->name ?? 'Bez kategorii' }}</small>
+                        <p class="text-primary fw-bold mt-auto mb-1">{{ $item->price_display }}</p>
+                        @if($item->deposit)
+                        <small class="text-muted mb-2">Kaucja: <span class="text-primary fw-bold">{{ $item->deposit_display }}</span></small>
+                        @endif
                         <span class="badge bg-{{ $item->status_badge_class }} mb-2">
                             {{ $item->status_label }}
                             @if($item->status === 'rented' && $item->rented_until)
@@ -89,6 +97,53 @@
             <a href="{{ route('categories.index') }}" class="btn btn-primary btn-lg">
                 <i class="fas fa-list me-2"></i>Cały katalog sprzętu
             </a>
+        </div>
+    </div>
+</section>
+@endif
+
+<!-- Recently added equipment -->
+@if($recent->count())
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-4 fw-bold">Ostatnio dodane</h2>
+        <div class="row g-4">
+            @foreach($recent as $item)
+            <div class="col-md-3 col-sm-6">
+                <div class="card equipment-card shadow-sm h-100">
+                    @if($item->getFirstMediaUrl('images', 'thumb'))
+                        <img src="{{ $item->getFirstMediaUrl('images', 'thumb') }}"
+                             class="card-img-top" alt="{{ $item->name }}">
+                    @else
+                        <div class="no-image-placeholder">
+                            <i class="fas fa-image fa-2x text-muted"></i>
+                        </div>
+                    @endif
+                    <div class="card-body d-flex flex-column">
+                        <h6 class="card-title fw-bold">
+                            {{ $item->name }}
+                            @if($item->service_available)
+                            <i class="fas fa-wrench text-warning ms-1" title="Dostępna usługa tym sprzętem"></i>
+                            @endif
+                        </h6>
+                        <small class="text-muted mb-2">{{ $item->categories->first()?->name ?? 'Bez kategorii' }}</small>
+                        <p class="text-primary fw-bold mt-auto mb-1">{{ $item->price_display }}</p>
+                        @if($item->deposit)
+                        <small class="text-muted mb-2">Kaucja: <span class="text-primary fw-bold">{{ $item->deposit_display }}</span></small>
+                        @endif
+                        <span class="badge bg-{{ $item->status_badge_class }} mb-2">
+                            {{ $item->status_label }}
+                            @if($item->status === 'rented' && $item->rented_until)
+                                do {{ $item->rented_until->format('d.m.Y') }}
+                            @endif
+                        </span>
+                        <a href="{{ route('equipment.show', $item) }}" class="btn btn-outline-primary btn-sm mt-auto">
+                            Zobacz szczegóły
+                        </a>
+                    </div>
+                </div>
+            </div>
+            @endforeach
         </div>
     </div>
 </section>

@@ -15,7 +15,7 @@ class ContactController extends Controller
 {
     public function index()
     {
-        $equipment = Equipment::public()->with('category')->ordered()->get();
+        $equipment = Equipment::public()->with('categories')->ordered()->get();
 
         return view('contact.index', compact('equipment'));
     }

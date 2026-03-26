@@ -11,7 +11,7 @@ class EquipmentController extends Controller
     {
         abort_if($equipment->status === 'hidden', 404);
 
-        $equipment->load(['category', 'media']);
+        $equipment->load(['categories', 'media']);
 
         return view('equipment.show', compact('equipment'));
     }
@@ -24,7 +24,7 @@ class EquipmentController extends Controller
             return response()->json([]);
         }
 
-        $results = Equipment::with('category')
+        $results = Equipment::with('categories')
             ->public()
             ->where(function ($q) use ($query) {
                 $q->where('name', 'like', "%{$query}%")
@@ -39,7 +39,7 @@ class EquipmentController extends Controller
                     'id' => $item->id,
                     'name' => $item->name,
                     'brand' => $item->brand,
-                    'category' => $item->category->name,
+                    'category' => $item->categories->pluck('name')->join(', '),
                     'price' => $item->price_display,
                     'status' => $item->status_label,
                     'url' => route('equipment.show', $item),

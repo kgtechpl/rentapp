@@ -76,7 +76,7 @@
                         <tr>
                             <td>
                                 <a href="{{ route('admin.equipment.edit', $item) }}">{{ $item->name }}</a>
-                                <small class="text-muted d-block">{{ $item->category->name }}</small>
+                                <small class="text-muted d-block">{{ $item->categories->first()?->name ?? 'Bez kategorii' }}</small>
                             </td>
                             <td class="text-right">
                                 <span class="badge badge-{{ $item->status_badge_class }}">{{ $item->status_label }}</span>

@@ -31,7 +31,7 @@ class DashboardController extends Controller
             $q->whereMonth('created_at', '>=', now()->subMonths(3));
         }])->orderBy('inquiries_count', 'desc')->limit(5)->get();
 
-        $recentEquipment = Equipment::with('category')->latest()->limit(5)->get();
+        $recentEquipment = Equipment::with('categories')->latest()->limit(5)->get();
         $recentInquiries = ContactInquiry::with('equipment')->latest('created_at')->limit(5)->get();
 
         // Inquiries last 7 days for chart

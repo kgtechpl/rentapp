@@ -69,11 +69,17 @@
                             <a href="{{ route('equipment.show', $item) }}" class="text-dark text-decoration-none">
                                 {{ $item->name }}
                             </a>
+                            @if($item->service_available)
+                            <i class="fas fa-wrench text-warning ms-1" title="Dostępna usługa tym sprzętem"></i>
+                            @endif
                         </h5>
                         @if($item->brand)
                             <small class="text-muted mb-1"><i class="fas fa-tag me-1"></i>{{ $item->brand }}</small>
                         @endif
-                        <p class="text-primary fw-bold">{{ $item->price_display }}</p>
+                        <p class="text-primary fw-bold mb-1">{{ $item->price_display }}</p>
+                        @if($item->deposit)
+                        <small class="text-muted mb-2">Kaucja: <span class="text-primary fw-bold">{{ $item->deposit_display }}</span></small>
+                        @endif
 
                         <span class="badge bg-{{ $item->status_badge_class }} mb-3">
                             {{ $item->status_label }}

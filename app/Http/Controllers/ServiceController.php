@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Equipment;
 use App\Models\ServicePage;
 
 class ServiceController extends Controller
@@ -14,6 +15,12 @@ class ServiceController extends Controller
             abort(404);
         }
 
-        return view('services.index', compact('servicePage'));
+        $serviceEquipment = Equipment::public()
+            ->where('service_available', true)
+            ->with(['categories', 'media'])
+            ->ordered()
+            ->get();
+
+        return view('services.index', compact('servicePage', 'serviceEquipment'));
     }
 }

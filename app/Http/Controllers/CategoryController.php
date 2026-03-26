@@ -19,7 +19,7 @@ class CategoryController extends Controller
 
         $statusFilter = request('status', 'all');
 
-        $query = $category->equipment()->with(['category', 'media'])->public();
+        $query = $category->equipment()->with(['categories', 'media'])->public();
 
         if ($statusFilter === 'available') {
             $query->where('status', 'available');

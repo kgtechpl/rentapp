@@ -11,10 +11,10 @@ class EquipmentController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Equipment::with(['category', 'media'])->ordered();
+        $query = Equipment::with(['categories', 'media'])->ordered();
 
         if ($request->filled('category_id')) {
-            $query->where('category_id', $request->category_id);
+            $query->whereHas('categories', fn($q) => $q->where('categories.id', $request->category_id));
         }
         if ($request->filled('status')) {
             $query->where('status', $request->status);
@@ -44,7 +44,11 @@ class EquipmentController extends Controller
         $data['is_featured'] = $request->boolean('is_featured');
         $data['service_available'] = $request->boolean('service_available');
 
+        $categories = $data['categories'];
+        unset($data['categories']);
+
         $equipment = Equipment::create($data);
+        $equipment->categories()->sync($categories);
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
@@ -75,7 +79,11 @@ class EquipmentController extends Controller
             $data['rented_until'] = null;
         }
 
+        $categories = $data['categories'];
+        unset($data['categories']);
+
         $equipment->update($data);
+        $equipment->categories()->sync($categories);
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
@@ -153,10 +161,15 @@ class EquipmentController extends Controller
     private function validateEquipment(Request $request, ?int $ignoreId = null): array
     {
         return $request->validate([
-            'category_id' => 'required|exists:categories,id',
+            'categories' => 'required|array|min:1',
+            'categories.*' => 'exists:categories,id',
             'name' => 'required|string|max:150',
             'description' => 'nullable|string',
             'price_per_day' => 'nullable|numeric|min:0',
+            'price_3_days' => 'nullable|numeric|min:0',
+            'price_7_days' => 'nullable|numeric|min:0',
+            'price_14_days' => 'nullable|numeric|min:0',
+            'deposit' => 'nullable|numeric|min:0',
             'is_price_negotiable' => 'boolean',
             'status' => 'required|in:available,rented,hidden',
             'rented_until' => 'nullable|date|required_if:status,rented',

@@ -1,6 +1,10 @@
 @extends('adminlte::page')
 
 @section('title', 'Dodaj sprzęt')
+
+{{-- Enable Select2 plugin --}}
+@section('plugins.Select2', true)
+
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
         <h1><i class="fas fa-plus me-2"></i>Dodaj sprzęt</h1>
