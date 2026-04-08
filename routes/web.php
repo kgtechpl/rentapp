@@ -55,7 +55,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
         Route::patch('/{equipment}/mark-rented', [\App\Http\Controllers\Admin\EquipmentController::class, 'markRented'])->name('mark-rented');
         Route::patch('/{equipment}/mark-available', [\App\Http\Controllers\Admin\EquipmentController::class, 'markAvailable'])->name('mark-available');
         Route::post('/{equipment}/media', [\App\Http\Controllers\Admin\EquipmentController::class, 'uploadMedia'])->name('media.upload');
-        Route::delete('/{equipment}/media/{media}', [\App\Http\Controllers\Admin\EquipmentController::class, 'deleteMedia'])->name('media.delete');
+        Route::delete('/{equipment}/media/{mediaId}', [\App\Http\Controllers\Admin\EquipmentController::class, 'deleteMedia'])->name('media.delete');
     });
 
     Route::prefix('inquiries')->name('inquiries.')->group(function () {

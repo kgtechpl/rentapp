@@ -133,7 +133,7 @@
     </script>
 @stop
 
-@push('scripts')
+@push('js')
 <script>
 document.querySelectorAll('.delete-media').forEach(function(btn) {
     btn.addEventListener('click', function() {
@@ -155,7 +155,10 @@ document.querySelectorAll('.delete-media').forEach(function(btn) {
                 if (el) el.remove();
             }
         })
-        .catch(function() { alert('Błąd podczas usuwania zdjęcia.'); });
+        .catch(function(err) {
+            console.error(err);
+            alert('Błąd podczas usuwania zdjęcia.');
+        });
     });
 });
 </script>
