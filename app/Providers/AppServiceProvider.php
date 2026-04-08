@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\ContactInquiry;
 use App\Models\Setting;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -13,6 +14,9 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        // Use Bootstrap 4 for pagination (AdminLTE compatibility)
+        Paginator::useBootstrap();
+
         View::composer('*', function ($view) {
             try {
                 $settings = Setting::allAsArray();
